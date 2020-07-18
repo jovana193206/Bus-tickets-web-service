@@ -1,0 +1,256 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./template.xhtml">
+
+            <ui:define name="top">
+                <h:form>
+                    <p:tabMenu activeIndex="1">
+                        <p:menuitem value="Gradske linije" action="#{login.adminGradske()}"/>
+                        <p:menuitem value="Medjugradske linije" action="adminMedjugradske"/>
+                        <p:menuitem value="Odobravanje zahteva" action="#{admin.idiNaZahteve()}"/>
+                    </p:tabMenu>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="left">
+                <div>
+                    <h:form>
+                        <p:panelMenu>
+                            <p:submenu label="Navigacija">
+                                <p:menuitem value="Izloguj se" action="#{login.logout()}"/>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </div>
+            </ui:define>
+
+            <ui:define name="content">
+                <h1>Dodaj novu medjugradsku liniju:</h1><br/>
+                <h:form id="novaMedjugradska">
+                    <p:steps activeIndex="2">
+                        <p:menuitem value="Dodaj liniju"/>
+                        <p:menuitem value="Informacije o polasku i dolasku"/>
+                        <p:menuitem value="Dodeli autobus" />
+                        <p:menuitem value="Dodeli vozaca" />
+                    </p:steps>
+                    <br/>
+                    <p:messages id="novaMedjugradskaMsgs" closable="true"/>
+
+                    <p:dataTable var="bus" value="#{admin.slobodniAutobusi}" scrollable="true" scrollWidth="100%"
+                                 selectionMode="single" selection="#{admin.odabraniAutobus}" rowKey="#{bus.id}">
+                        <f:facet name="header">
+                            Odaberite autobus iz liste slobodnih
+                        </f:facet>
+                        <p:column headerText="Marka: " width="80">
+                            <h:outputText value="#{bus.marka}" />
+                        </p:column>
+                        <p:column headerText="Model: " width="80">
+                            <h:outputText value="#{bus.model}" />
+                        </p:column>
+                        <p:column headerText="Broj sedista za putnike: " width="80">
+                            <h:outputText value="#{bus.brSedista}" />
+                        </p:column>
+                    </p:dataTable>
+                    <br/>
+                    <p:commandButton value="Potvrdi" update="novaMedjugradska" action="#{admin.dodeliBus()}" styleClass="ui-priority-primary"/>
+                </h:form>
+
+                <p:spacer height="10" />
+                <p:separator />
+                <p:spacer height="10" />
+
+                <h1>Dodaj novog prevoznika u bazu:</h1><br/>
+                <h:form id="noviPrevoznik">
+                    <p:messages id="noviPrevoznikMsgs" closable="true"/>
+
+                    <h:panelGrid columns="7" cellpadding="5">
+                        <h:outputLabel for="naziv" value="Naziv prevoznika: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="naziv" value="#{dodajPrevoznika.naziv}" required="true" 
+                                     requiredMessage="Polje Naziv prevoznika je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="naziv"/>
+
+                        <h:outputLabel for="adr" value="Adresa: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="adr" value="#{dodajPrevoznika.prevoznikAdresa}" required="true" 
+                                     requiredMessage="Polje Adresa je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="adr"/>
+
+                        <h:outputLabel for="tel" value="Telefon: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="tel" value="#{dodajPrevoznika.prevoznikTelefon}" required="true" 
+                                     requiredMessage="Polje Telefon je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="tel"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton value="Potvrdi" update="noviPrevoznik" actionListener="#{dodajPrevoznika.dodaj()}" styleClass="ui-priority-primary"/>
+                </h:form>
+                <br/>
+                <h:form enctype="multipart/form-data">
+                    <h:outputText value="Mozete dodati logo za unesenog prevoznika:" /><br/>
+                    <p:fileUpload value="#{dodajPrevoznika.file}" mode="simple" skinSimple="true"/>
+                    <br/>
+                    <p:commandButton value="Submit" ajax="false" actionListener="#{dodajPrevoznika.upload}" update="noviPrevoznik"/>
+                </h:form>
+                
+                <p:spacer height="10" />
+                <p:separator />
+                <p:spacer height="10" />
+
+                <h1>Dodaj novi autobus u bazu:</h1><br/>
+                <h:form id="noviBus">
+                    <p:messages id="noviBusMsgs" closable="true"/>
+
+                    <h:panelGrid columns="7" cellpadding="5">
+                        <h:outputLabel for="marka" value="Marka: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="marka" value="#{dodajBus.marka}" required="true" 
+                                     requiredMessage="Polje Marka je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="marka"/>
+
+                        <h:outputLabel for="model" value="Model: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="model" value="#{dodajBus.model}" required="true" 
+                                     requiredMessage="Polje Model je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="model"/>
+
+                        <h:outputLabel for="sedista" value="Broj sedista za putnike: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="sedista" value="#{dodajBus.brSedista}" required="true" 
+                                     requiredMessage="Polje Broj sedista za putnike je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="sedista"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton value="Potvrdi" update="noviBus" actionListener="#{dodajBus.dodaj()}" styleClass="ui-priority-primary"/>
+                </h:form>
+                <br/>
+                <h:form enctype="multipart/form-data">
+                    <h:outputText value="Mozete dodati maksimalno 5 slika za ovaj autobus:" /><br/>
+                    <p:fileUpload fileUploadListener="#{slikeAutobusaUpload.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                                  auto="true" multiple="true" fileLimit="5" allowTypes="/(\.|\/)(gif|jpg|png)$/" />
+                    <p:commandButton value="Submit" ajax="false" actionListener="#{slikeAutobusaUpload.upload}" update="noviBus"/>
+                </h:form>
+                
+                <p:spacer height="10" />
+                <p:separator />
+                <p:spacer height="10" />
+                
+                <h1>Dodaj novog vozaca u bazu:</h1><br/>
+                <h:form id="noviVozac">
+                    <p:messages id="noviVozacMsgs" closable="true"/>
+                    
+                    <h:panelGrid columns="7" cellpadding="5">
+                        <h:outputLabel for="ime" value="Ime: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="ime" value="#{admin.vozacIme}" required="true" 
+                                     requiredMessage="Polje Ime je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="ime"/>
+                        
+                        <h:outputLabel for="prezime" value="Prezime: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="prezime" value="#{admin.vozacPrezime}" required="true" 
+                                     requiredMessage="Polje Prezime je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="prezime"/>
+
+                        <h:outputLabel for="birthdate" value="Datum rodjenja: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:calendar id="birthdate" value="#{admin.vozacDatumRodj}" navigator="true"
+                                    yearRange="c-120:c"
+                                    required="true" requiredMessage="Polje Datum rodjenja je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="birthdate"/>
+                        
+                        <h:outputLabel for="pocetak" value="Kada je poceo da vozi: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:calendar id="pocetak" value="#{admin.vozacGodinaPocetka}" navigator="true"
+                                    yearRange="c-50:c"
+                                    required="true" requiredMessage="Polje Kada je poceo da vozi je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="pocetak"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton value="Potvrdi" update="noviVozac" actionListener="#{admin.dodajVozaca()}" styleClass="ui-priority-primary"/>
+                </h:form>
+                
+                <p:spacer height="10" />
+                <p:separator />
+                <p:spacer height="10" />
+
+                <h1>Dodaj novo stajaliste u bazu:</h1><br/>
+                <h:form id="novoStajaliste">
+                    <p:messages id="novoStajalisteMsgs" closable="true"/>
+
+                    <h:panelGrid columns="7" cellpadding="5">
+                        <h:outputLabel for="grad" value="Grad: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="grad" value="#{admin.grad}" required="true" 
+                                     requiredMessage="Polje Grad je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="grad"/>
+
+                        <h:outputLabel for="lat" value="Latitude: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputNumber id="lat" value="#{admin.latitude}" required="true" 
+                                     requiredMessage="Polje Latitude je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="lat"/>
+
+                        <h:outputLabel for="long" value="Longitude: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputNumber id="long" value="#{admin.longitude}" required="true" 
+                                     requiredMessage="Polje Longitude je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="long"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton value="Potvrdi" update="novoStajaliste" actionListener="#{admin.dodajStajaliste()}" styleClass="ui-priority-primary"/>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

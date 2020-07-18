@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./template.xhtml">
+
+            <ui:define name="top">
+                <h:form>
+                    <p:tabMenu activeIndex="3">
+                        <p:menuitem value="Gradske linije" action="#{login.korisnikGradske()}"/>
+                        <p:menuitem value="Medjugradske linije" action="#{korisnicki.idiNaMedjugradske()}"/>
+                        <p:menuitem value="Mesecne kartice" action="#{korisnicki.idiNaMarkice()}"/>
+                        <p:menuitem value="Rezervacije" action="#{korisnicki.idiNaRezervacije()}"/>
+                    </p:tabMenu>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="left">
+                <div>
+                    <h:form>
+                        <p:panelMenu>
+                            <p:submenu label="Navigacija">
+                                <p:menuitem value="Izloguj se" action="#{login.logout()}"/>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </div>
+            </ui:define>
+
+            <ui:define name="content">
+                <p:messages id="rezervacijeMsgs" closable="true"/>
+                <h:form>
+                    <p:dataTable var="rez" value="#{korisnicki.rezervacije}" scrollable="true" scrollWidth="100%"
+                                 rowStyleClass="#{korisnicki.rezProsla(rez.id) ? 'prosla' : 'aktivna'}" >
+                        <f:facet name="header">
+                            Sve vase odobrene rezervacije
+                        </f:facet>
+                        <p:column headerText="ID linije: " width="80">
+                            <h:outputText value="#{rez.medjugradske.id}" />
+                        </p:column>
+                        <p:column headerText="Polaziste: " width="80">
+                            <h:outputText value="#{rez.polaziste}" />
+                        </p:column>
+                        <p:column headerText="Polazak sa pocetne stanice: " width="80">
+                            <h:outputText value="#{rez.medjugradske.polazak}" />
+                        </p:column>
+                        <p:column headerText="Odrediste: " width="80">
+                            <h:outputText value="#{rez.odrediste}" />
+                        </p:column>
+                        <p:column headerText="Otkazi" width="100">
+                            <p:commandButton value="Otkazi" action="#{korisnicki.otkaziRez(rez.id)}" 
+                                             rendered="#{korisnicki.mozeOtkaz(rez.id)}" styleClass="ui-priority-primary"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

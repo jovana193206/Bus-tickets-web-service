@@ -1,0 +1,325 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./template.xhtml">
+
+            <ui:define name="top">
+                <h:form>
+                    <p:tabMenu>
+                        <p:menuitem value="Gradske linije" action="#{login.adminGradske()}"/>
+                        <p:menuitem value="Medjugradske linije" action="#{admin.idiNaMedjugradske()}"/>
+                        <p:menuitem value="Odobravanje zahteva" action="#{admin.idiNaZahteve()}"/>
+                    </p:tabMenu>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="left">
+                <div>
+                    <h:form>
+                        <p:panelMenu>
+                            <p:submenu label="Navigacija">
+                                <p:menuitem value="Izloguj se" action="#{login.logout()}"/>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </div>
+            </ui:define>
+
+            <ui:define name="content">
+                <h1>Dodaj novu gradsku liniju:</h1><br/>
+                <h:form id="novaGradska">
+                    <p:messages id="novaGradskaMsgs" closable="true"/>
+                    
+                    <h:panelGrid columns="7" cellpadding="5">
+                        <h:outputLabel for="brlinije" value="Broj linije: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="brlinije" value="#{dodajGradsku.brLinijeStr}" required="true" 
+                                     requiredMessage="Polje Broj linije je obavezno!"
+                                     validatorMessage="Broj linije mora biti pozitivan ceo broj!">
+                            <f:validateRegex pattern="^[0-9]+$" />
+                            <p:clientValidator />
+                        </p:inputText>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="brlinije"/>
+                        
+                        <h:outputLabel for="polaziste" value="Polaziste: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="polaziste" value="#{dodajGradsku.polaziste}" required="true" 
+                                     requiredMessage="Polje Polaziste je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="polaziste"/>
+
+                        <h:outputLabel for="odrediste" value="Odrediste: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="odrediste" value="#{dodajGradsku.odrediste}" required="true" 
+                                     requiredMessage="Polje Odrediste je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="odrediste"/>
+                        
+                        <h:outputLabel for="medjustanice" value="Medjustanice:  " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputTextarea id="medjustanice" value="#{dodajGradsku.medjustanice}" required="true"
+                                         rows="6" cols="50"
+                                         requiredMessage="Polje Medjustanice je obavezno!" 
+                                         placeholder="Unesite medjustanice odvojene -"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="medjustanice"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton value="Potvrdi" update="novaGradska" actionListener="#{dodajGradsku.dodajLiniju()}" styleClass="ui-priority-primary"/>
+                </h:form>
+
+                <p:spacer height="10" />
+                <p:separator />
+                <p:spacer height="10" />
+                
+                <h1>Dodaj red voznje za gradsku liniju:</h1><br/>
+                <h:form id="redVoznje">
+                    <p:messages id="redVoznjeMsgs" closable="true"/>
+                    
+                    <h:panelGrid columns="7" cellpadding="5">
+                        <h:outputLabel for="linija" value="Broj linije: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="linija" value="#{dodajGradsku.brLinijeStr}" required="true" 
+                                     requiredMessage="Polje Broj linije je obavezno!"
+                                     validatorMessage="Broj linije mora biti pozitivan ceo broj!">
+                            <f:validateRegex pattern="^[0-9]+$" />
+                            <p:clientValidator />
+                        </p:inputText>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="linija"/>
+                        
+                        <b>SMER1:</b>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        
+                        <h:outputLabel for="polaziste1" value="Polaziste: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="polaziste1" value="#{dodajGradsku.polaziste1}" required="true" 
+                                     requiredMessage="Polje Polaziste je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="polaziste1"/>
+
+                        <h:outputLabel for="odrediste1" value="Odrediste: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="odrediste1" value="#{dodajGradsku.odrediste1}" required="true" 
+                                     requiredMessage="Polje Odrediste je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="odrediste1"/>
+                        
+                        <h:outputLabel for="polasci1" value="Polasci:  " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputTextarea id="polasci1" value="#{dodajGradsku.polasci1}" required="true" 
+                                         rows="10" cols="20"
+                                         requiredMessage="Polje Polasci je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="polasci1"/>
+                        
+                        <b>SMER2:</b>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        
+                        <h:outputLabel for="polaziste2" value="Polaziste: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="polaziste2" value="#{dodajGradsku.polaziste2}" required="true" 
+                                     requiredMessage="Polje Polaziste je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="polaziste2"/>
+
+                        <h:outputLabel for="odrediste2" value="Odrediste: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="odrediste2" value="#{dodajGradsku.odrediste2}" required="true" 
+                                     requiredMessage="Polje Odrediste je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="odrediste2"/>
+                        
+                        <h:outputLabel for="polasci2" value="Polasci:  " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputTextarea id="polasci2" value="#{dodajGradsku.polasci2}" required="true" 
+                                         rows="10" cols="20"
+                                         requiredMessage="Polje Polasci je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="polasci2"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton value="Potvrdi" update="redVoznje" actionListener="#{dodajGradsku.dodajRedVoznje()}" styleClass="ui-priority-primary"/>
+                </h:form>
+
+                <p:spacer height="10" />
+                <p:separator />
+                <p:spacer height="10" />
+                
+                <h1>Dodeli vozace gradskoj liniji:</h1><br/>
+                <h:form id="dodeliVozaca">
+                    <p:messages id="dodeliVozacaMsgs" closable="true"/>
+                    
+                    <h:panelGrid columns="7" cellpadding="5">
+                        <h:outputLabel for="dodeliV" value="Broj linije: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="dodeliV" value="#{login.brLinijeStr}" required="true" 
+                                     requiredMessage="Polje Broj linije je obavezno!"
+                                     validatorMessage="Broj linije mora biti pozitivan ceo broj!">
+                            <f:validateRegex pattern="^[0-9]+$" />
+                            <p:clientValidator />
+                        </p:inputText>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="dodeliV"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:dataTable var="vozac" value="#{login.slobodniVozaci}" rows="10"
+                                 paginator="true" scrollable="true" scrollWidth="100%"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+                        <p:column headerText="Ime i prezime" width="80">
+                            <h:outputText value="#{vozac.ime} #{vozac.prezime}" />
+                        </p:column>
+                        <p:column headerText="Datum rodjenja" width="80">
+                            <h:outputText value="#{vozac.datumRodj}" />
+                        </p:column>
+                        <p:column headerText="Godine iskustva" width="80">
+                            <h:outputText value="#{vozac.iskustvo}" />
+                        </p:column>
+                        <p:column headerText="Dodeli" width="80">
+                            <p:commandButton value="Dodeli" update="dodeliVozaca" actionListener="#{login.dodeliVozaca(vozac)}" styleClass="ui-priority-primary"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <p:spacer height="10" />
+                <p:separator />
+                <p:spacer height="10" />
+                
+                <h1>Dodaj novog vozaca u bazu:</h1><br/>
+                <h:form id="noviVozac">
+                    <p:messages id="noviVozacMsgs" closable="true"/>
+                    
+                    <h:panelGrid columns="7" cellpadding="5">
+                        <h:outputLabel for="ime" value="Ime: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="ime" value="#{admin.vozacIme}" required="true" 
+                                     requiredMessage="Polje Ime je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="ime"/>
+                        
+                        <h:outputLabel for="prezime" value="Prezime: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="prezime" value="#{admin.vozacPrezime}" required="true" 
+                                     requiredMessage="Polje Prezime je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="prezime"/>
+
+                        <h:outputLabel for="birthdate" value="Datum rodjenja: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:calendar id="birthdate" value="#{admin.vozacDatumRodj}" navigator="true"
+                                    yearRange="c-120:c"
+                                    required="true" requiredMessage="Polje Datum rodjenja je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="birthdate"/>
+                        
+                        <h:outputLabel for="pocetak" value="Kada je poceo da vozi: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:calendar id="pocetak" value="#{admin.vozacGodinaPocetka}" navigator="true"
+                                    yearRange="c-50:c"
+                                    required="true" requiredMessage="Polje Kada je poceo da vozi je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="pocetak"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton value="Potvrdi" update="noviVozac" actionListener="#{admin.dodajVozaca()}" styleClass="ui-priority-primary"/>
+                </h:form>
+
+                <p:spacer height="10" />
+                <p:separator />
+                <p:spacer height="10" />
+                
+                <h1>Otkazi gradsku liniju na odredjeni period:</h1><br/>
+                <h:form id="otkazi">
+                    <p:messages id="otkaziMsgs" closable="true"/>
+                    
+                    <h:panelGrid columns="7" cellpadding="5">
+                        <h:outputLabel for="otkazana" value="Broj linije: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="otkazana" value="#{dodajGradsku.brLinijeStr}" required="true" 
+                                     requiredMessage="Polje Broj linije je obavezno!"
+                                     validatorMessage="Broj linije mora biti pozitivan ceo broj!">
+                            <f:validateRegex pattern="^[0-9]+$" />
+                            <p:clientValidator />
+                        </p:inputText>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="otkazana"/>
+                        
+                        <h:outputLabel for="otkaziOd" value="Otkazi od: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:calendar id="otkaziOd" value="#{dodajGradsku.otkazanaOd}"
+                                    required="true" requiredMessage="Polje Otkazi od je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="otkaziOd"/>
+                        
+                        <h:outputLabel for="otkaziDo" value="Otkazi do: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:calendar id="otkaziDo" value="#{dodajGradsku.otkazanaDo}"
+                                    required="true" requiredMessage="Polje Otkazana do je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="otkaziDo"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton value="Potvrdi" update="otkazi" actionListener="#{dodajGradsku.otkaziLiniju()}" styleClass="ui-priority-primary"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

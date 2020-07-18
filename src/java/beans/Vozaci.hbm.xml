@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 22, 2018 4:10:50 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="beans.Vozaci" table="vozaci" catalog="piaprojekat" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="ime" type="string">
+            <column name="ime" length="128" not-null="true" />
+        </property>
+        <property name="prezime" type="string">
+            <column name="prezime" length="128" not-null="true" />
+        </property>
+        <property name="datumRodj" type="date">
+            <column name="datumRodj" length="10" not-null="true" />
+        </property>
+        <property name="iskustvo" type="int">
+            <column name="iskustvo" not-null="true" />
+        </property>
+        <property name="slobodan" type="int">
+            <column name="slobodan" not-null="true" />
+        </property>
+        <set name="medjugradskes" table="medjugradske" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="vozacId" />
+            </key>
+            <one-to-many class="beans.Medjugradske" />
+        </set>
+        <set name="vozigradskus" table="vozigradsku" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="vozac" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="beans.Vozigradsku" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./template.xhtml">
+
+            <ui:define name="left">
+                <div>
+                    <h:form id="loginForm">
+                        <h:outputLabel for="username" value="Username:" />
+                        <p:inputText id="username" value="#{login.user}" required="true" requiredMessage="Polje username je obavezno!"/>
+                        <br/>
+                        <h:outputLabel for="password" value="Password:" />
+                        <p:password id="password" value="#{login.pass}" required="true" requiredMessage="Polje password je obavezno!"/>
+                        <br/><br/>
+                        <p:messages id="loginmessages" closable="true">
+                            <p:autoUpdate />
+                        </p:messages>
+                        <p:commandButton value="Login" id="login" update="loginForm" actionListener="#{login.login()}" styleClass="ui-priority-primary"/>
+                        <br/><br/>
+                    </h:form>
+                    <h:form>
+                        <p:commandLink id="registracija" action="registracija" ajax="false">
+                            <h:outputText value="Registruj se" />
+                        </p:commandLink>
+                    </h:form>
+                    <br/><br/>
+                    <h:form>
+                        <p:panelMenu>
+                            <p:submenu label="Navigacija">
+                                <p:menuitem value="Nazad" action="index"/>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </div>
+            </ui:define>
+
+            <ui:define name="content">
+                <h1>Rezultati pretrage:</h1><br/>
+                <h:form id="rezultati">
+                    <p:dataTable var="linija" value="#{pretraga.medjugradske}" rows="10"
+                                 paginator="true" scrollable="true" scrollWidth="100%"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+                        <p:column headerText="Prevoznik" width="80">
+                            <h:outputText value="#{linija.prevoznici.naziv}" />
+                        </p:column>
+                        <p:column headerText="Polazak" width="80">
+                            <h:outputText value="#{linija.polazak}" />
+                        </p:column>
+                        <p:column headerText="Polaziste" width="80">
+                            <h:outputText value="#{linija.polaziste}" />
+                        </p:column>
+                        <p:column headerText="Medjustanice" width="180">
+                            <h:outputText value="#{linija.medjustanice}" />
+                        </p:column>
+                        <p:column headerText="Odrediste" width="80">
+                            <h:outputText value="#{linija.odrediste}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

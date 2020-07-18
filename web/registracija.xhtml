@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Registracija</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./template.xhtml">
+            <ui:define name="left">
+                <div>
+                    <h:form>
+                        <p:panelMenu>
+                            <p:submenu label="Navigacija">
+                                <p:menuitem value="Nazad" action="index"/>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </div>
+            </ui:define>
+            <ui:define name="content">
+                <h:form id="registerForm">
+                    
+                    Napomena: Lozinka mora imati najmanje 6 a najvise 12 karaktera. Minimalan broj velikih slova je 1, 
+                    <br/>
+                    minimalan broj malih slova je 3, minimalan broj numerika i specijalnih znakova je 1. 
+                    <br/>
+                    Pocetni karakter mora biti malo ili veliko slovo. Maksimalan broj uzastopnih karaktera je 2.
+                    <br/><br/>
+                    
+                    <p:messages id="registermessages" closable="true">
+                         <p:autoUpdate />
+                    </p:messages>
+
+                    <h:panelGrid id="registerPanel" columns="7" cellpadding="5">
+                        
+                        <h:outputLabel for="ime" value="Ime: * " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="ime" value="#{register.ime}" required="true" 
+                                     requiredMessage="Polje Ime je obavezno!"
+                                     validatorMessage="Unesite svoje ime.">
+                            <f:validateRegex pattern="^[a-zA-Z]+$" />
+                            <p:clientValidator />
+                        </p:inputText>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="ime"/>
+                        
+                        <h:outputLabel for="prezime" value="Prezime: * " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="prezime" value="#{register.prezime}" required="true" 
+                                     requiredMessage="Polje Prezime je obavezno!"
+                                     validatorMessage="Unesite svoje prezime.">
+                            <f:validateRegex pattern="^[a-zA-Z]+$" />
+                            <p:clientValidator />
+                        </p:inputText>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="prezime"/>
+
+                        <h:outputLabel for="user" value="Korisnicko ime: * " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="user" value="#{register.user}" required="true" 
+                                     requiredMessage="Polje Korisnicko ime je obavezno!">
+                            <p:ajax update="registermessages"  listener="#{register.checkUser()}" />
+                        </p:inputText>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="user"/>
+
+                        <h:outputLabel for="pwd1" value="Lozinka: * " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:password id="pwd1" value="#{register.pass}" feedback="true"
+                                    required="true" requiredMessage="Polje Lozinka je obavezno!" >
+                            <p:ajax update="registermessages"  listener="#{register.checkPass()}" />
+                        </p:password>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="pwd1"/>
+
+                        <h:outputLabel for="pwd2" value="Potvrda lozinke: * " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:password id="pwd2" value="#{register.passAgain}" required="true"
+                                    requiredMessage="Polje Potvrda lozinke je obavezno!">
+                            <p:ajax update="registermessages"  listener="#{register.checkPassMatch()}" />
+                        </p:password>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="pwd2"/>
+
+                        <h:outputLabel for="adr" value="Adresa stanovanja (grad, opstina, adresa): *  " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="adr" value="#{register.adresa}" required="true" 
+                                     requiredMessage="Polje Adresa je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="adr"/>
+
+                        <h:outputLabel for="birthdate" value="Datum rodjenja: * " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:calendar id="birthdate" value="#{register.rodjenje}" navigator="true"
+                                    yearRange="c-120:c"
+                                    required="true" requiredMessage="Polje Datum rodjenja je obavezno!"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="birthdate"/>
+
+                        <h:outputLabel for="telefon" value="Kontakt telefon: * " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="telefon" value="#{register.telefon}" required="true" 
+                                     requiredMessage="Polje Kontakt telefon je obavezno!"
+                                     validatorMessage="Unesite broj u formatu +381xxxxxxxx(x) ili 0xxxxxxxx(x).">
+                            <f:validateRegex pattern="^(((\+381)|0)[0-9]{8}([0-9])?)$" />
+                            <p:clientValidator />
+                        </p:inputText>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="telefon"/>
+
+                        <h:outputLabel for="zaposlenje" value="Kategorija zaposlenja: * " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:selectOneMenu id="zaposlenje" value="#{register.zaposlenje}" required="true" 
+                                         requiredMessage="Polje Kategorija zaposlenja je obavezno!">
+                            <f:selectItem itemLabel="nezaposlen" itemValue="nezaposlen" />
+                            <f:selectItem itemLabel="zaposlen" itemValue="zaposlen" />
+                            <f:selectItem itemLabel="student" itemValue="student" />
+                            <f:selectItem itemLabel="lice sa invaliditetom" itemValue="lice sa invaliditetom" />
+                            <f:selectItem itemLabel="penzioner" itemValue="penzioner" />
+                        </p:selectOneMenu>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="zaposlenje"/>
+
+                        <h:outputLabel for="email" value="Elektronska posta: " />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:inputText id="email" value="#{register.email}"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <p:message for="email"/>
+                        
+                    </h:panelGrid>
+                    <br/><br/>
+                    <p:captcha label="Captcha" />
+                    <br/>
+                    
+                    <p:commandButton value="Potvrdi" id="register" update="registerForm" 
+                                     actionListener="#{register.register()}" styleClass="ui-priority-primary"
+                                     oncomplete="Recaptcha.reload()"
+                                     onerror="Recaptcha.reload()"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./template.xhtml">
+
+            <ui:define name="top">
+                <h:form>
+                    <p:tabMenu activeIndex="2">
+                        <p:menuitem value="Gradske linije" action="#{login.adminGradske()}"/>
+                        <p:menuitem value="Medjugradske linije" action="#{admin.idiNaMedjugradske()}"/>
+                        <p:menuitem value="Odobravanje zahteva" action="#{admin.idiNaZahteve()}"/>
+                    </p:tabMenu>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="left">
+                <div>
+                    <h:form>
+                        <p:panelMenu>
+                            <p:submenu label="Navigacija">
+                                <p:menuitem value="Izloguj se" action="#{login.logout()}"/>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </div>
+            </ui:define>
+
+            <ui:define name="content">
+                <h1>Zahtevi za registraciju korisnika:</h1><br/>
+                <h:form id="registracije">
+                    <p:messages id="registracijemsgs" closable="true"/>
+                    <p:dataTable var="zahtev" value="#{admin.registracije}" rows="10"
+                                 paginator="true" scrollable="true" scrollWidth="100%"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+                        <p:column headerText="Korisnicko ime" width="80">
+                            <h:outputText value="#{zahtev.username}" />
+                        </p:column>
+                        <p:column headerText="Lozinka" width="80">
+                            <h:outputText value="#{zahtev.password}" />
+                        </p:column>
+                        <p:column headerText="Ime i prezime" width="80">
+                            <h:outputText value="#{zahtev.ime} #{zahtev.prezime}" />
+                        </p:column>
+                        <p:column headerText="Adresa" width="80">
+                            <h:outputText value="#{zahtev.adresa}" />
+                        </p:column>
+                        <p:column headerText="Datum rodjenja" width="80">
+                            <h:outputText value="#{zahtev.datumRodj}" />
+                        </p:column>
+                        <p:column headerText="Telefon" width="80">
+                            <h:outputText value="#{zahtev.telefon}" />
+                        </p:column>
+                        <p:column headerText="Kategorija" width="80">
+                            <h:outputText value="#{zahtev.zaposlenje}" />
+                        </p:column>
+                        <p:column headerText="Email" width="180">
+                            <h:outputText value="#{zahtev.email}" />
+                        </p:column>
+                        <p:column headerText="Odobri" width="80">
+                            <p:commandButton value="Odobri" update="registracije" actionListener="#{admin.odobriRegistraciju(zahtev.username)}" styleClass="ui-priority-primary"/>
+                        </p:column>
+                        <p:column headerText="Odbij" width="80">
+                            <p:commandButton value="Odbij" update="registracije" actionListener="#{admin.odbijRegistraciju(zahtev.username)}" styleClass="ui-priority-primary"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <p:spacer height="10" />
+                <p:separator />
+                <p:spacer height="10" />
+
+                <h1>Zahtevi za rezervaciju karata:</h1><br/>
+                <h:form id="rezervacije">
+                    <p:messages id="rezervacijemsgs" closable="true"/>
+                    <p:dataTable var="zahtev" value="#{admin.rezervacije}" rows="10"
+                                 paginator="true" scrollable="true" scrollWidth="100%"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+                        <p:column headerText="ID rezervacije" width="80">
+                            <h:outputText value="#{zahtev.id}" />
+                        </p:column>
+                        <p:column headerText="Korisnik" width="80">
+                            <h:outputText value="#{zahtev.korisnik.username}" />
+                        </p:column>
+                        <p:column headerText="Linija" width="80">
+                            <h:outputText value="#{zahtev.medjugradske.id}" />
+                        </p:column>
+                        <p:column headerText="Polaziste" width="80">
+                            <h:outputText value="#{zahtev.polaziste}" />
+                        </p:column>
+                        <p:column headerText="Odrediste" width="80">
+                            <h:outputText value="#{zahtev.odrediste}" />
+                        </p:column>
+                        <p:column headerText="Odobri" width="80">
+                            <p:commandButton value="Odobri" update="rezervacije" actionListener="#{admin.odobriRezervaciju(zahtev.id)}" styleClass="ui-priority-primary"/>
+                        </p:column>
+                        <p:column headerText="Odbij" width="80">
+                            <p:commandButton value="Odbij" update="rezervacije" actionListener="#{admin.odbijRezervaciju(zahtev.id)}" styleClass="ui-priority-primary"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <p:spacer height="10" />
+                <p:separator />
+                <p:spacer height="10" />
+
+                <h1>Zahtevi za izdavanje mesecnih i godisnjih karata:</h1><br/>
+                <h:form id="markice">
+                    <p:messages id="markicemsgs" closable="true"/>
+                    <p:dataTable var="zahtev" value="#{admin.markice}" rows="10"
+                                 paginator="true" scrollable="true" scrollWidth="100%"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+                        <p:column headerText="ID zahteva" width="50">
+                            <h:outputText value="#{zahtev.id}" />
+                        </p:column>
+                        <p:column headerText="Korisnik" width="100">
+                            <h:outputText value="#{zahtev.korisnik.username}" />
+                        </p:column>
+                        <p:column headerText="Kategorija korisnika" width="180">
+                            <h:outputText value="#{zahtev.korisnik.zaposlenje}" />
+                        </p:column>
+                        <p:column headerText="Trajanje" width="80">
+                            <h:outputText value="#{zahtev.godisnja == 1 ? 'godisnja' : 'mesecna'}" />
+                        </p:column>
+                        <p:column headerText="Odobri" width="80">
+                            <p:commandButton value="Odobri" update="markice" actionListener="#{admin.odobriMarkicu(zahtev.id)}" styleClass="ui-priority-primary"/>
+                        </p:column>
+                        <p:column headerText="Odbij" width="80">
+                            <p:commandButton value="Odbij" update="markice" actionListener="#{admin.odbijMarkicu(zahtev.id)}" styleClass="ui-priority-primary"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

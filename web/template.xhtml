@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+        <h:outputStylesheet name="css/default.css"/>
+        <h:outputStylesheet name="css/cssLayout.css"/>
+        <h:outputStylesheet name="css/bootstrap.min.css"/>
+        <ui:insert name="head"></ui:insert>
+        <title>Autobuske karte Srbija</title>
+    </h:head>
+
+    <h:body>
+
+        <div id="top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <p:graphicImage value="./resources/photos/Iconblock-Remixed-Bus.ico" 
+                                        height="100" width="100"/>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <h1> Autobuske karte Srbija</h1>
+                        </div>
+                        <div class="row">
+                            <ui:insert name="top">
+                                
+                            </ui:insert>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div id="left" class="col-xs-12 col-sm-4">
+                    <ui:insert name="left">Left</ui:insert>
+                </div>
+                <div id="content" class="left_content col-xs-12 col-sm-8">
+                    <ui:insert name="content">Content</ui:insert>
+                </div>
+                <div class="clearfix visible-sm-block"></div>
+            </div>
+        </div>
+        <div id="bottom">
+            <div class="container">
+                <div class="row">
+                    <ui:insert name="bottom">
+                        <i>Jovana Matic PIA2018</i>
+                    </ui:insert>
+                </div>
+            </div>
+        </div>
+
+    </h:body>
+
+</html>

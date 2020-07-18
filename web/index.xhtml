@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet name="css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/default.css"/>
+        <title>Autobuske karte Srbija</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./template.xhtml">
+            <ui:define name="top">
+                <h:form>
+                    <p:tabMenu>
+                        <p:menuitem value="Pretraga medjugradskih linija" action="index"/>
+                        <p:menuitem value="Pregled najskorijih polazaka" action="#{pretraga.najskorije()}"/>
+                    </p:tabMenu>
+                </h:form>
+            </ui:define>
+            
+            <ui:define name="left">
+                <div>
+                    <h:form id="loginForm">
+                        <h:outputLabel for="username" value="Username:" />
+                        <p:inputText id="username" value="#{login.user}" required="true" requiredMessage="Polje username je obavezno!"/>
+                        <br/>
+                        <h:outputLabel for="password" value="Password:" />
+                        <p:password id="password" value="#{login.pass}" required="true" requiredMessage="Polje password je obavezno!"/>
+                        <br/><br/>
+                        <p:messages id="loginmessages" closable="true">
+                            <p:autoUpdate />
+                        </p:messages>
+                        <p:commandButton value="Login" id="login" update="loginForm" action="#{login.login()}" styleClass="ui-priority-primary"/>
+                        <br/><br/>
+                    </h:form>
+                    <h:form>
+                        <p:commandLink id="registracija" action="registracija" ajax="false">
+                            <h:outputText value="Registruj se" />
+                        </p:commandLink>
+                    </h:form>
+                </div>
+            </ui:define>
+
+            <ui:define name="content">
+                
+                <br/><br/>
+                <h:form id="pretragaForm">
+                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                        <p:outputLabel for="kriterijum" value="Pretrazi linije po:" />
+                        <p:selectOneMenu id="kriterijum" value="#{pretraga.kriterijum}">
+                            <f:selectItem itemLabel="mestu polazista" itemValue="polaziste" />
+                            <f:selectItem itemLabel="mestu odredista" itemValue="odrediste" />
+                            <f:selectItem itemLabel="nazivu prevoznika" itemValue="prevoznik" />
+                            <f:selectItem itemLabel="vremenu polaska" itemValue="vreme" />
+                            <p:ajax update="pretragaForm"  
+                                    listener="#{gost.postaviKriterijum()}" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <h:panelGrid id="unesiPrevoznika" columns="2" style="margin-bottom:10px" cellpadding="5" 
+                                 rendered="#{gost.unosPrevoznika}">
+                        <h:outputLabel for="prevoznik" value="Naziv prevoznika: " />
+                        <p:inputText id="prevoznik" value="#{pretraga.prevoznik}"/>
+                    </h:panelGrid>
+                    <h:panelGrid id="unesiVreme" columns="4" style="margin-bottom:10px" cellpadding="5" 
+                                 rendered="#{gost.unosVremena}">
+                        <h:outputLabel for="od" value="Vremenski interval od:" />
+                        <p:calendar id="od" value="#{pretraga.vremeOd}" pattern="MM/dd/yyyy HH:mm:ss"  />
+                        <h:outputLabel for="od" value="do:" />
+                        <p:calendar id="do" value="#{pretraga.vremeDo}" pattern="MM/dd/yyyy HH:mm:ss"  />
+                    </h:panelGrid>
+                    <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+                        <h:outputLabel for="polazak" value="Datum polaska: " rendered="#{not gost.unosVremena}"/>
+                        <p:calendar id="polazak" value="#{pretraga.datumPolaska}" rendered="#{not gost.unosVremena}"
+                                    required="true" requiredMessage="Polje Datum polaska je obavezno!"/>
+                        <p:message for="polazak" rendered="#{not gost.unosVremena}"/>
+                        <h:outputLabel for="polaziste" value="Mesto polazista: " />
+                        <p:inputText id="polaziste" value="#{pretraga.polaziste}"/>
+                        <p:message for="polaziste"/>
+                        <h:outputLabel for="odrediste" value="Mesto odredista: " />
+                        <p:inputText id="odrediste" value="#{pretraga.odrediste}"/>
+                        <p:message for="odrediste"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton value="Pretrazi" id="pretrazi" action="#{pretraga.pretrazi()}" styleClass="ui-priority-primary"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 22, 2018 4:10:50 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="beans.Korisnik" table="korisnik" catalog="piaprojekat" optimistic-lock="version">
+        <id name="username" type="string">
+            <column name="username" length="20" />
+            <generator class="assigned" />
+        </id>
+        <property name="password" type="string">
+            <column name="password" length="13" not-null="true" />
+        </property>
+        <property name="tip" type="int">
+            <column name="tip" not-null="true" />
+        </property>
+        <property name="ime" type="string">
+            <column name="ime" length="16" not-null="true" />
+        </property>
+        <property name="prezime" type="string">
+            <column name="prezime" length="32" not-null="true" />
+        </property>
+        <property name="adresa" type="string">
+            <column name="adresa" length="256" not-null="true" />
+        </property>
+        <property name="datumRodj" type="date">
+            <column name="datumRodj" length="10" not-null="true" />
+        </property>
+        <property name="telefon" type="string">
+            <column name="telefon" length="15" not-null="true" />
+        </property>
+        <property name="zaposlenje" type="string">
+            <column name="zaposlenje" length="21" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="32" />
+        </property>
+        <property name="status" type="int">
+            <column name="status" not-null="true" />
+        </property>
+        <set name="rezervacijas" table="rezervacija" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="korisnik" length="20" not-null="true" />
+            </key>
+            <one-to-many class="beans.Rezervacija" />
+        </set>
+        <set name="markices" table="markice" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="korisnikId" length="20" not-null="true" />
+            </key>
+            <one-to-many class="beans.Markice" />
+        </set>
+    </class>
+</hibernate-mapping>

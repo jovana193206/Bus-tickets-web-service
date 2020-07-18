@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 22, 2018 4:10:50 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="beans.Markice" table="markice" catalog="piaprojekat" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="korisnik" class="beans.Korisnik" fetch="select">
+            <column name="korisnikId" length="20" not-null="true" />
+        </many-to-one>
+        <property name="godisnja" type="int">
+            <column name="godisnja" not-null="true" />
+        </property>
+        <property name="odobrena" type="int">
+            <column name="odobrena" not-null="true" />
+        </property>
+        <property name="obavesti" type="int">
+            <column name="obavesti" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

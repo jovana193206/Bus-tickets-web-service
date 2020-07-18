@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./template.xhtml">
+
+            <ui:define name="top">
+                <h:form>
+                    <p:tabMenu>
+                        <p:menuitem value="Gradske linije" action="#{login.korisnikGradske()}"/>
+                        <p:menuitem value="Medjugradske linije" action="#{korisnicki.idiNaMedjugradske()}"/>
+                        <p:menuitem value="Mesecne kartice" action="#{korisnicki.idiNaMarkice()}"/>
+                        <p:menuitem value="Rezervacije" action="#{korisnicki.idiNaRezervacije()}"/>
+                    </p:tabMenu>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="left">
+                <div>
+                    <h:form>
+                        <p:panelMenu>
+                            <p:submenu label="Navigacija">
+                                <p:menuitem value="Izloguj se" action="#{login.logout()}"/>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </div>
+            </ui:define>
+
+            <ui:define name="content">
+                <p:messages id="notifikacije" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
+                <h:form id="svegradske">
+                    <p:dataTable var="linija" value="#{gradskeFilter.sveGradske}" 
+                                 filteredValue="#{gradskeFilter.filteredGradske}" widgetVar="gradskeWidget"
+                                 rows="10" paginator="true" scrollable="true" scrollWidth="100%"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Unesite naziv autobuskog stajalista do kog zelite da stignete:" />
+                                <p:inputText id="globalFilter" value="#{gradskeFilter.ciljnaStanica}">
+                                    <p:ajax update="svegradske" 
+                                            listener="#{gradskeFilter.pretraziOdrediste()}" />
+                                </p:inputText>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column headerText="Broj linije" width="80"  filterBy="#{linija.brLinije}" filterMatchMode="contains">
+                            <h:outputText value="#{linija.brLinije}"/>
+                        </p:column>
+                        <p:column headerText="Polazno stajaliste" width="80" filterBy="#{linija.polaziste}" filterMatchMode="contains">
+                            <h:outputText value="#{linija.polaziste}" />
+                        </p:column>
+                        <p:column headerText="Krajnje stajaliste" width="80" filterBy="#{linija.odrediste}" filterMatchMode="contains">
+                            <h:outputText value="#{linija.odrediste}" />
+                        </p:column>
+                        <p:column headerText="Vidi detalje" width="80">
+                            <p:commandButton value="Detaljno" action="#{korisnicki.gradskaDetaljno(linija)}" styleClass="ui-priority-primary"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

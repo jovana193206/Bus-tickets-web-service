@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 22, 2018 4:10:50 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="beans.Medjugradske" table="medjugradske" catalog="piaprojekat" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="autobusi" class="beans.Autobusi" fetch="select">
+            <column name="autobusId" />
+        </many-to-one>
+        <many-to-one name="prevoznici" class="beans.Prevoznici" fetch="select">
+            <column name="prevoznikId" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vozaci" class="beans.Vozaci" fetch="select">
+            <column name="vozacId" />
+        </many-to-one>
+        <property name="polaziste" type="string">
+            <column name="polaziste" length="128" not-null="true" />
+        </property>
+        <property name="odrediste" type="string">
+            <column name="odrediste" length="128" not-null="true" />
+        </property>
+        <property name="medjustanice" type="string">
+            <column name="medjustanice" length="16777215" not-null="true" />
+        </property>
+        <property name="polazak" type="timestamp">
+            <column name="polazak" length="19" />
+        </property>
+        <property name="dolazak" type="timestamp">
+            <column name="dolazak" length="19" />
+        </property>
+        <set name="rezervacijas" table="rezervacija" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="linija" not-null="true" />
+            </key>
+            <one-to-many class="beans.Rezervacija" />
+        </set>
+    </class>
+</hibernate-mapping>
